@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+public class Flooring {
+	public static void main(String[] args) {
+		int t1, t2, th1, r1, r2 ;
+		double Tarea;
+		double Rarea;
+		double RoomArea;
+		double Barea;
+		double b1;
+		double b2;
+		double BoardPackArea;
+		// t1 is base 1 of trapezoid
+		t1 = 20;
+		// t2 is base 2 of trapezoid
+		t2 = 10;
+		// th1 is height of trapezoid
+		th1 = 12;
+		// Tarea is the area of the trapezoid
+		Tarea = .5 * (t1+t2) * th1;
+		System.out.println("Area of Trapezoid is: " + Tarea);
+		// r1 is height of rectangle
+		r1 = 20;
+		// r2 is width of rectangle
+		r2 = 13;
+		// Rarea is the area of the rectangle
+		Rarea = r1 * r2;
+		System.out.println("Area of Rectangle is: " + Rarea);
+		// RoomArea is the area of the rectangle plus the area of the trapezoid
+		RoomArea = Tarea + Rarea;
+		System.out.println("The area of the whole room is: " + RoomArea);
+		//  b1 is height of laminate board
+		b1 = 2.5;
+		//b2 is the width of laminate board
+		b2 = .5;
+		// Barea is the area of a single board
+		Barea = b1 * b2;
+		System.out.println("The area of a laminate board is: " + Barea);
+		//BoardPackArea is the area covered by a pack of boards
+		BoardPackArea = Barea * 6;
+		System.out.println("The area of a pack of laminate boards is: " + BoardPackArea);
+
+	}
+}

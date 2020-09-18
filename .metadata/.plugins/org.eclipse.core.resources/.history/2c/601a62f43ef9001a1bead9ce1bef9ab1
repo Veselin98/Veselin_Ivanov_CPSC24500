@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+
+/**
+ * @author Ves
+ *
+ */
+import java.util.Random;
+public class CircleCalc1 {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Random rnd = new Random();
+		int radius = rnd.nextInt();
+		// area is radius squared times PI
+		double area = Math.PI * (radius * radius);
+		System.out.println("The area of the circle is: " + area);
+		// circumference is radius times 2 times PI
+		double circumference = Math.PI * 2 * radius;
+		System.out.println("The Circumference of the circle is: "  +circumference);
+	}
+
+}

@@ -1,0 +1,14 @@
+import java.util.Scanner;
+
+public class Flooring {
+	public static void main(String[] args) {
+		int t1, t2, th1, r1, r2;
+		double Tarea;
+		double Rarea;
+		t1 = 20;
+		t2 = 10;
+		th1 = 12;
+		Tarea = .5 * (t1+t2) * th1;
+		System.out.println("Area is:" + Tarea);
+	}
+}
