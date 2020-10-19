@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"java.project.referencedLibraries": [
+			"lib/**/*.jar",
+			"c:\\Users\\Ves\\Downloads\\jmathio.jar",
+			"c:\\Users\\Ves\\Downloads\\jmathplot.jar"
+		]
+	}
+}
