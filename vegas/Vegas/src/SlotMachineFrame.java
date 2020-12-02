@@ -1,4 +1,3 @@
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -15,107 +14,194 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.awt.PrintJob;
 
-//menu options
-class SlotMachineFrame extends JFrame{
-    /**
+public class SlotMachineFrame extends JFrame {
+	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private TilePanel pan;
-    public void setupMenu(){
-        JMenuBar mbar = new JMenuBar();
+	private TilePanel tpan;
+	private JTextField txtBalance;
+	private JButton btnMax, btnMid, btnMin;
+	public void setupMenu() {
+		JMenuBar mbar = new JMenuBar();
 		JMenu mnuFile = new JMenu("File");
-        JMenuItem miLoad = new JMenuItem("Load saved tiles");
+		JMenuItem miLoad = new JMenuItem("Load");
+		JMenuItem miSave = new JMenuItem("Save");
+		JMenuItem miPrint = new JMenuItem("Print");
+		JMenuItem miRestart = new JMenuItem("Restart");
+		JMenuItem miExit = new JMenuItem("Exit");
 		miLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TileReader dr = new TileReader();
 				JFileChooser jfc = new JFileChooser();
+				TileReader tr = new TileReader();
+				ArrayList<Tile> tiles;
 				if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-					ArrayList<Tile> tileRead = dr.read(jfc.getSelectedFile());
-					if (tileRead == null) {
-						JOptionPane.showMessageDialog(null,"Could not read saved tiles from file.");
-					} else {
-						pan.setTiles(tileRead);
+					tiles = tr.read(jfc.getSelectedFile());
+					if (tiles != null) {
+						tpan.setTiles(tiles);
 						repaint();
+					} else {
+						JOptionPane.showMessageDialog(null,"Tiles could not be read.");
 					}
 				}
 			}
 		});
-		mnuFile.add(miLoad);
-		
-		JMenuItem miSave = new JMenuItem("Save");
-		miSave.addActionListener( new ActionListener() {
+
+		miSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser jfc = new JFileChooser();
-				TileWriter dw = new TileWriter();
-				if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) { // the user wants to go ahead
-					if (dw.write(jfc.getSelectedFile(), pan.getTiles())) {
-						JOptionPane.showMessageDialog(null,"Wrote tiles to file.");
+				TileWriter tw = new TileWriter();
+				if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+					if (tw.write(jfc.getSelectedFile(),tpan.getTiles())) {
+						JOptionPane.showMessageDialog(null,"Wrote tiles successfully.");
 					} else {
-						JOptionPane.showMessageDialog(null,"Could not write tiles to file.");
+						JOptionPane.showMessageDialog(null,"Could not write tiles.");
 					}
 				}
 			}
 		});
-		mnuFile.add(miSave);
-        JMenuItem miPrint = new JMenuItem("Print");
-		mnuFile.add(miPrint);
-		//restart
-		JMenuItem miRestart = new JMenuItem("Restart");
-		mnuFile.add(miRestart);
-		//exit
-		JMenuItem miExit = new JMenuItem("Exit");
+		miRestart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tpan.newTile();
+				tpan.resetAmount();
+				txtBalance.setText(String.format("%.2f", tpan.getAmount()));
+				if(tpan.getAmount() == 5){
+					btnVisT();
+				}
+				repaint();
+			}
+		});
+		miPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jfc = new JFileChooser("C:/Users/Ves/Desktop");
+				TileWriter tw = new TileWriter();
+				if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+					if (tw.write(jfc.getSelectedFile(),tpan.getTiles())) {
+						JOptionPane.showMessageDialog(null,"Wrote tiles successfully.");
+					} else {
+						JOptionPane.showMessageDialog(null,"Could not write tiles.");
+					}
+				}
+				ArrayList<Tile> tiles;
+				TileReader tr = new TileReader();
+				if (jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+					tiles = tr.read(jfc.getSelectedFile());
+					if (tiles != null) {
+						tpan.setTiles(tiles);
+						repaint();
+					} else {
+						JOptionPane.showMessageDialog(null,"Tiles could not be read.");
+					}
+				}
+			}
+		});
 		miExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
+		mnuFile.add(miLoad);
+		mnuFile.add(miSave);
+		mnuFile.add(miPrint);
+		mnuFile.add(miRestart);
 		mnuFile.add(miExit);
 		mbar.add(mnuFile);
 		JMenu mnuHelp = new JMenu("Help");
 		JMenuItem miAbout = new JMenuItem("About");
 		miAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,"Veselin Ivanov -- https://github.com/Veselin98/Veselin_Ivanov_CPSC24500");
+				JOptionPane.showMessageDialog(null, "Veselin Ivanov -- https://github.com/Veselin98/Veselin_Ivanov_CPSC24500");
 			}
 		});
 		mnuHelp.add(miAbout);
-		mbar.add(mnuFile);
 		mbar.add(mnuHelp);
 		setJMenuBar(mbar);
-    }
-
-    public void setupLook(){
-		setBounds(100,100,1000,800);
-		setTitle("Vegas$Baby$Vegas Slot Machine");
-        Container c = getContentPane();
-        c.setLayout(new BorderLayout());
-		pan = new TilePanel();
-		c.add(pan,BorderLayout.CENTER);
+	}
+	public void btnVisF(){
+		btnMax.setEnabled(false);
+		btnMid.setEnabled(false);
+		btnMin.setEnabled(false);
+	}
+	public void btnVisT(){
+		btnMax.setEnabled(true);
+		btnMid.setEnabled(true);
+		btnMin.setEnabled(true);
+	}
+	public void setupLook() {
+		setBounds(100,100,750,300);
+		setTitle("Vegas Baby Vegas Slot Machine");
+		Container c = getContentPane();
+		c.setLayout(new BorderLayout());
 		JPanel panSouth = new JPanel();
 		panSouth.setLayout(new FlowLayout());
-		JButton btnMax = new JButton("MAX");
+		btnMax = new JButton("Max");
+		btnMax.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){  
+				tpan.newTile();
+				tpan.tileChecker(2);
+				txtBalance.setText(String.format("%.2f", tpan.getAmount()));
+				if(tpan.getAmount() == 0){
+					btnVisF();
+				}
+				else{
+					//btnVisT();
+				}
+				repaint();
+			}
+		});
+		btnMid = new JButton("Mid");
+		btnMid.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){  
+				tpan.newTile();
+				tpan.tileChecker(1);
+				txtBalance.setText(String.format("%.2f", tpan.getAmount()));
+				if(tpan.getAmount() == 0){
+					btnVisF();
+				}
+				else{
+					//btnVisT();
+				}
+				repaint();
+			}
+		});
+		btnMin = new JButton("Min");
+		btnMin.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){  
+				tpan.newTile();
+				tpan.tileChecker(0);
+				txtBalance.setText(String.format("%.2f", tpan.getAmount()));
+				if(tpan.getAmount() == 0){
+					btnVisF();
+				}
+				else{
+					//btnVisT();
+				}
+				repaint();
+			}
+		});
+		/*btnMax = new JButton("Max");
+		btnMid = new JButton("Mid");
+		btnMin = new JButton("Min");
+		*/
 		panSouth.add(btnMax);
-		JButton btnMid = new JButton("MID");
 		panSouth.add(btnMid);
-		JButton btnMin = new JButton("MIN");
 		panSouth.add(btnMin);
-		panSouth.add(new JLabel("$"));
-		JTextField txtBalance = new JTextField(8);
-		txtBalance.setText("5.00");
-		panSouth.add(txtBalance);
 		c.add(panSouth,BorderLayout.SOUTH);
+		tpan = new TilePanel();
+		c.add(tpan,BorderLayout.CENTER);
+		JLabel lblBalance = new JLabel("$");
+		panSouth.add(lblBalance);
+		txtBalance = new JTextField(6);
+		txtBalance.setEditable(false);
+		txtBalance.setText(String.format("%.2f", tpan.getAmount()));
+		panSouth.add(txtBalance);
 		setupMenu();
 	}
-
-
-
-
-
-    public SlotMachineFrame(){
-		setupLook(); 
-		setDefaultCloseOperation(EXIT_ON_CLOSE); 
-		
+	public SlotMachineFrame() {
+		setupLook();
 	}
-}    
+}

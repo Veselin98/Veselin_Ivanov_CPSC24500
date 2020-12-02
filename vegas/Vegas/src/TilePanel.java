@@ -1,259 +1,208 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import javax.swing.JPanel;
-import java.awt.Color;
+import java.util.Random;
 
-class TilePanel extends JPanel implements MouseListener {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    private String mouseStatus;
-    private int left;
-    private int top;
-    //private ArrayList<Tile> t;
-    private ArrayList<Tile> ts;
-    private Tile tile1;
-    private Tile tile2;
-    private Tile tile3;
-    private Tile tile4;
-    
-    
-	public void clearTiles() {
-		ts.clear();
+import javax.swing.JPanel;
+public class TilePanel extends JPanel implements MouseListener {
+	/**
+	 *
+	 */
+	private String file = "tiles.txt";
+	public void setSelectedFile(String file){
+		this.file = file;
 	}
-	public ArrayList<Tile> getTiles() {
-		return ts;
+	public String getSelectedFile(){
+		return file;
 	}
-	public void setTiles(ArrayList<Tile> ts) {
-		this.ts = ts;
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Tile> tiles;
+	private Random rnd;
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+		int whichTile = e.getX()/(this.getWidth()/4);
+		Tile tile = tiles.get(whichTile);
+		tile.setRandomly(rnd);
+		repaint();
+	}
+	private double amount = 5;
+	public void setAmount(double amount){
+		this.amount =  amount;
+	}
+	public double getAmount(){
+		return amount;
 	}
 	public TilePanel() {
-        top = 50;
-        tile1 = new Tile();
-        tile2 = new Tile();
-        tile3 = new Tile();
-        tile4 = new Tile();
-        ts = new ArrayList<Tile>(4);
-        ts.add(tile1);
-        ts.add(tile2);
-        ts.add(tile3);
-        ts.add(tile4);
-        
+		tiles = new ArrayList<Tile>();
+		Tile tile;
+		rnd = new Random();
+		for (int i = 0; i < 4; i++) {
+			tile = new Tile();
+			tile.setRandomly(rnd);
+			tiles.add(tile);
+		}
+		addMouseListener(this);
+	}
+	public ArrayList<Tile> getTiles() {
+		return tiles;
+	}
+	public void setTiles(ArrayList<Tile> tiles) {
+		this.tiles = tiles;
 	}
 	@Override
-	public void paintComponent(Graphics v) {
-        super.paintComponent(v);
-        int offset = 0;
-        for(Tile t : ts){
-            if(t.getTileShape() == 0 && t.getTileColor() == 4) {
-                v.setColor(Color.RED);
-                if (offset == 0) {
-                    left = 850;
-                    offset += 1;
-                } else if(offset == 1){
-                    left = 650;
-                    offset += 1;
-                }else if(offset == 2){
-                    left = 300;
-                    offset += 1;
-                }else if(offset == 3){
-                    left = 50;
-                    offset += 0;
-                }
-                v.fillOval(left, top, 100, 100);
-		    }else if(t.getTileShape() == 0 && t.getTileColor() == 3) {
-                v.setColor(Color.YELLOW);
-                if (offset == 0) {
-                    left = 850;
-                    offset += 1;
-                } else if(offset == 1){
-                    left = 650;
-                    offset += 1;
-                }else if(offset == 2){
-                    left = 300;
-                    offset += 1;
-                }else if(offset == 3){
-                    left = 50;
-                    offset += 0;
-                }
-                v.fillOval(left, top, 100, 100);
-
-            }else if(t.getTileShape() == 0 && t.getTileColor() == 2) {
-                v.setColor(Color.GRAY);
-                if (offset == 0) {
-                    left = 850;
-                    offset += 1;
-                } else if(offset == 1){
-                    left = 650;
-                    offset += 1;
-                }else if(offset == 2){
-                    left = 300;
-                    offset += 1;
-                }else if(offset == 3){
-                    left = 50;
-                    offset += 0;
-                }
-                v.fillOval(left, top, 100, 100);
-
-            }else if(t.getTileShape() == 0 && t.getTileColor() == 1) {
-                v.setColor(Color.MAGENTA);
-                if (offset == 0) {
-                    left = 850;
-                    offset += 1;
-                } else if(offset ==1){
-                    left = 650;
-                    offset += 1;
-                }else if(offset ==2){
-                    left = 300;
-                    offset += 1;
-                }else if(offset == 3){
-                    left = 50;
-                    offset += 0;
-                }
-                v.fillOval(left, top, 100, 100);
-            }else if(t.getTileShape() == 0 && t.getTileColor() == 0) {
-                v.setColor(Color.CYAN);
-                if (offset == 0) {
-                    left = 850;
-                    offset += 1;
-                } else if(offset == 1){
-                    left = 650;
-                    offset += 1;
-                }else if(offset == 2){
-                    left = 300;
-                    offset += 1;
-                }else if(offset == 3){
-                    left = 50;
-                    offset += 0;
-                }
-                v.fillOval(left, top, 100, 100);
-            } else if(t.getTileShape() == 1 && t.getTileColor() == 4) {
-            v.setColor(Color.RED);
-            if (offset == 0) {
-                left = 850;
-                offset += 1;
-            } else if(offset == 1){
-                left = 650;
-                offset += 1;
-            }else if(offset == 2){
-                left = 300;
-                offset += 1;
-            }else if(offset == 3){
-                left = 50;
-                offset += 0;
-            }
-            v.fillRect(left, top, 100, 100);
-        }else if(t.getTileShape() == 1 && t.getTileColor() == 3) {
-            v.setColor(Color.YELLOW);
-            if (offset == 0) {
-                left = 850;
-                offset += 1;
-            } else if(offset == 1){
-                left = 650;
-                offset += 1;
-            }else if(offset == 2){
-                left = 300;
-                offset += 1;
-            }else if(offset == 3){
-                left = 50;
-                offset += 0;
-            }
-            v.fillOval(left, top, 100, 100);
-
-        }else if(t.getTileShape() == 1 && t.getTileColor() == 2) {
-            v.setColor(Color.GRAY);
-            if (offset == 0) {
-                left = 850;
-                offset += 1;
-            } else if(offset == 1){
-                left = 650;
-                offset += 1;
-            }else if(offset == 2){
-                left = 300;
-                offset += 1;
-            }else if(offset == 3){
-                left = 50;
-                offset += 0;
-            }
-            v.fillRect(left, top, 100, 100);
-
-        }else if(t.getTileShape() == 1 && t.getTileColor() == 1) {
-            v.setColor(Color.MAGENTA);
-            if (offset == 0) {
-                left = 850;
-                offset += 1;
-            } else if(offset == 1){
-                left = 650;
-                offset += 1;
-            }else if(offset == 2){
-                left = 300;
-                offset += 1;
-            }else if(offset == 3){
-                left = 50;
-                offset += 0;
-            }
-            v.fillRect(left, top, 100, 100);
-
-        }else if(t.getTileShape() == 1 && t.getTileColor() == 0) {
-            v.setColor(Color.CYAN);
-            if (offset == 0) {
-                left = 850;
-                offset += 1;
-            } else if(offset == 1){
-                left = 600;
-                offset += 1;
-            }else if(offset == 2){
-                left = 300;
-                offset += 1;
-            }else if(offset == 3){
-                left = 50;
-                offset += 0;
-            }
-            v.fillRect(left, top, 100, 100);
-        } 
-        }
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		int cellWidth = this.getWidth() / 4;
+		int tileSize = 4*cellWidth/5;
+		int shape;
+		Color color;
+		Tile tile;
+		for (int i = 0; i < tiles.size(); i++) {
+			tile = tiles.get(i);
+			shape = tile.getShape();
+			color = tile.getActualColor();
+			g.setColor(color);
+			if (shape == 0) {
+				g.fillOval(i*cellWidth + cellWidth/10, cellWidth/10, tileSize, tileSize); 
+			} else if (shape == 1) {
+				g.fillRect(i*cellWidth + cellWidth/10, cellWidth/10, tileSize, tileSize);
+			} 
+		}
 	}
-	public String getMouseStatus() {
-		return mouseStatus;
+	public void newTile(){
+		tiles = new ArrayList<Tile>();
+		Tile tile;
+		rnd = new Random();
+		for (int i = 0; i < 4; i++) {
+			tile = new Tile();
+			tile.setRandomly(rnd);
+			tiles.add(tile);
+		}
+		repaint();
 	}
-	public void setMouseStatus(String ms) {
-		mouseStatus = ms;
-    }
-	@Override
-	public void mouseClicked(MouseEvent e) {
-        if (e.getX() > 0 && e.getX() < 250) {
-			tile1.setORide();
-			repaint();
-		}else if(e.getX() > 251 && e.getX() < 500) {
-			tile2.setORide();
-			repaint();
-		}else if(e.getX() > 501 && e.getX() < 750) {
-			tile3.setORide();
-			repaint();
-		}else if(e.getX() > 751 && e.getX() < 1000) {
-			tile4.setORide();
-			repaint();
-        }
-       
-}
+	public void resetAmount(){
+		amount = 5;
+	}
+	public void tileChecker(int b){
+		int shape ; // shape
+		Color color; // color
+		Tile tile; // tile holder
+		double winCS = 0; //color winner
+		int winColor = 0; //shape winner
+		int circle = 0; // shape counter circle
+		int square = 0;// shape counter square
+		int redColor = 0;// color counter red
+		int yellowColor = 0;// color counter yellow
+		int greenColor = 0;// color counter green
+		int orangeColor = 0;// color counter orange
+		int blueColor = 0;// color counter blue
+		for (int i = 0; i < tiles.size(); i++) {
+			tile = tiles.get(i);
+			shape = tile.getShape();
+			color = tile.getActualColor();
+			if(shape == 0 && color == Color.YELLOW){
+				circle += 1;
+				yellowColor += 1;
+			} else if ( shape == 0 && color == Color.GREEN){
+				circle +=1;
+				greenColor += 2;
+			}else if(shape == 0 && color == Color.ORANGE){
+				circle += 1;
+				orangeColor += 1;
+			}else if(shape == 0 && color == Color.RED){
+				circle += 1;
+				redColor += 1;
+			}else if(shape == 0 && color == Color.BLUE){
+				circle += 1;
+				blueColor += 1;
+			} else if(shape == 1 && color == Color.YELLOW){
+				square += 1;
+				yellowColor += 1;
+			} else if(shape == 1 && color == Color.GREEN){
+				square += 1;
+				greenColor += 1;
+			} else if(shape == 1 && color == Color.ORANGE){
+				square += 1;
+				orangeColor += 1;
+			} else if(shape == 1 && color == Color.RED){
+				square += 1;
+				redColor += 1;
+			} else if(shape == 1 && color == Color.BLUE){
+				square += 1;
+				blueColor += 1;
+			}
+		}
+		if(circle == 4 && yellowColor == 4){
+			winCS += 1;
+		}else if(circle == 4 && greenColor == 4){
+			winCS += 1;
+		}else if(circle == 4 && orangeColor == 4){
+			winCS += 1;
+		}else if(circle == 4 && redColor == 4){
+			winCS += 1;
+		}else if(circle == 4 && blueColor == 4){
+			winCS += 1;
+		}
+		else if(square == 4 && yellowColor == 4){
+			winCS +=1;
+		}else if(square == 4 && greenColor == 4){
+			winCS += 1;
+		}else if(square == 4 && orangeColor == 4){
+			winCS += 1;
+		}else if(square == 4 && redColor == 4){
+			winCS += 1;
+		}else if(square == 4 && blueColor ==4){
+			winCS += 1;
+		}else{
+			winCS *= 0;
+		}	
+		if(yellowColor == 4){
+			winColor +=1;
+		}else if(greenColor == 4){
+			winColor +=1;
+		}else if(orangeColor ==4){
+			winColor +=1;
+		}else if(redColor ==4){
+			winColor +=1;
+		}else if(blueColor ==4){
+			winColor +=1;
+		}else{
+			winColor *= 0;
+		}
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-        
-    }
-	@Override
-	public void mousePressed(MouseEvent e) {
+		if(b == 2){ //max
+			if(winCS == 1){
+				amount *= 100;
+			}else if(winColor == 1 && winCS != 1){
+				amount *= 25;
+			}else{//lost
+				amount *= 0;
+			}
+		}else if(b == 1){ //mid
+			if(winCS == 1){
+				amount *= 50;
+			}else if(winColor == 1 && winCS != 1){
+				amount *= 10;
+			}else{ //lost
+				amount *= .5;
+			}
+		}else if(b == 0){ // min
+			if(winCS == 1){
+				amount *= 10;
+			}else if(winColor == 1 && winCS != 1){
+				amount *= 5;
+			}else{
+				amount *= .9; //lost
+			}
+		}else{
+			amount *=0;
+		}
+		//repaint();
+	}
 	
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	
-	}
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
 }
