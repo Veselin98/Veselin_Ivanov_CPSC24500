@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Ves\\Documents\\GitHub\\Veselin_Ivanov_CPSC24500\\OOP Theory Quiz Tool\\OOP Theory Quiz Tool\\lib\\json-simple-1.1.1.jar"
+    ]
+}
